@@ -3,32 +3,32 @@ package lee;
 import java.util.Arrays;
 import java.util.Random;
 /**
- * has a `main` method that calls the `doTest` method, which in turn calls the `warmUp`
- * method before looping through various lengths of integer arrays and comparing the
- * results of three different methods for finding the minimum value: `minIntFor`,
- * `minIntStream`, and `minIntParallelStream`. The `minIntFor` method compares the
- * minimum value found using each of these methods, and prints a message indicating
- * whether the values are equal or not.
+ * has a `main` method that calls the `doTest` method, which performs various tests
+ * on an array of integers. The `doTest` method first calls the `warmUp` method, which
+ * runs random integer operations on an array of size 100. Then, it loops through
+ * multiple iterations of three different methods to compare the results: `minIntFor`,
+ * `minIntStream`, and `minIntParallelStream`. Each of these methods performs a minimal
+ * integer calculation on a given array length and compares the results.
  */
 public class IntTest {
 
 	/**
-	 * runs the `IntTest` class's `doTest()` method, which performs some testing related
-	 * to integers.
+	 * executes a test for integers.
 	 * 
-	 * @param args 0 or more command-line arguments passed to the program when it is
-	 * executed, and is used by the `main` method to perform various actions based on
-	 * their presence or absence.
+	 * @param args 1 or more command line arguments passed to the program when it is
+	 * launched, and are provided as an array to the `main()` method for processing.
 	 * 
-	 * 	- Length: The length of the `args` array is 0.
-	 * 	- Elements: The elements of the `args` array are of type `String`.
+	 * 	- Length: The `args` array has 0 or more elements, as declared in the function signature.
+	 * 	- Element types: Each element of `args` is a String object.
+	 * 	- Optional arguments: There are no optional arguments provided in the example code.
 	 */
 	public static void main(String[] args) {
 		new IntTest().doTest();
 	}
 	/**
-	 * performs several tests to compare the performance of different methods for finding
-	 * the minimum integer in an array: `minIntFor`, `minIntStream`, and `minIntParallelStream`.
+	 * performs a series of tests on an array of integers, including measuring the time
+	 * complexity of various methods for finding the minimum integer in the array using
+	 * nanotime and TimeUtil classes.
 	 */
 	public void doTest(){
 		warmUp();
@@ -74,8 +74,9 @@ public class IntTest {
 		}
 	}
 	/**
-	 * generates a random integer array, runs various methods on it, and repeats the
-	 * process multiple times.
+	 * performs random integer generation, min-int computations using various methods
+	 * (for loop, Stream, and Parallel Stream), and iterates over 20000 times to prepare
+	 * the system for future tasks.
 	 */
 	private void warmUp(){
 		int[] arr = new int[100];
@@ -88,16 +89,17 @@ public class IntTest {
 		}
 	}
 	/**
-	 * iterates through an array of integers, finds the smallest value among them, and
-	 * returns it.
+	 * takes an integer array as input and returns the smallest value present in the
+	 * array. It does so by iterating through the elements of the array, comparing each
+	 * one to the current minimum value, and updating the minimum value accordingly.
 	 * 
-	 * @param arr 1D array of integers that is being searched for the smallest value.
+	 * @param arr array whose minimum integer value is to be found.
 	 * 
-	 * The `int[]` array `arr` represents a collection of integers that can range from
-	 * negative infinity to positive infinity.
-	 * The length of the array `arr` is determined by the value of its component `i`.
+	 * 	- `arr` is an array of integers, with a length of `arr.length`.
+	 * 	- Each element in the array can take on any integer value within the range of
+	 * `-2^31` to `2^31-1`, inclusive of zero.
 	 * 
-	 * @returns the smallest integer value among the elements in the input array.
+	 * @returns the smallest integer value among the input array elements.
 	 */
 	private int minIntFor(int[] arr){
 		int min = Integer.MAX_VALUE;
@@ -108,12 +110,15 @@ public class IntTest {
 		return min;
 	}
 	/**
-	 * takes an integer array as input and returns the minimum value in the array using
-	 * Java Stream API.
+	 * takes an integer array `arr` and returns the minimum value in the array as an int
+	 * using the `Arrays.stream()` method to stream the elements of the array and the
+	 * `min()` method to find the minimum value.
 	 * 
-	 * @param arr 1D array of integers that is to be processed by the `minIntStream()` method.
+	 * @param arr integer array to be processed by the `minIntStream()` method.
 	 * 
-	 * 	- `arr` is an int array with multiple values.
+	 * 	- `arr` is an array of integers.
+	 * 	- It has at least one element.
+	 * 	- The elements in the array are not null or empty.
 	 * 
 	 * @returns the minimum integer value in the input array.
 	 */
@@ -121,31 +126,34 @@ public class IntTest {
 		return Arrays.stream(arr).min().getAsInt();
 	}
 	/**
-	 * parallelly processes an integer array using the `Arrays.stream()` method and returns
-	 * the minimum value in the array as an integer.
+	 * takes an integer array and returns the minimum value in the array using a parallel
+	 * stream.
 	 * 
-	 * @param arr 1D array of integers that is being processed by the `minIntParallelStream()`
+	 * @param arr 1D array of integers that is processed by the `minIntParallelStream()`
 	 * method.
 	 * 
-	 * 	- It is an array of integers.
-	 * 	- The array has several elements (the exact number may vary depending on the input).
-	 * 	- Each element in the array is an integer value.
+	 * 	- `arr` is an array of integers with unspecified size and shape.
+	 * 	- The elements in `arr` can take on any valid integer value.
+	 * 	- `Arrays.stream(arr)` creates a parallel stream of integers from the elements
+	 * of `arr`.
 	 * 
-	 * @returns the minimum value of the input array, calculated using the `min()` method
-	 * and returning the result as an integer.
+	 * @returns the minimum integer value in the input array.
 	 */
 	private int minIntParallelStream(int[] arr){
 		return Arrays.stream(arr).parallel().min().getAsInt();
 	}
 	/**
-	 * generates a random integer array within a specified range by iterating through the
-	 * array and assigning each index a randomly generated value using the `Random` class.
+	 * generates a random integer array of specified length, using the `Random` class to
+	 * generate unique integers.
 	 * 
-	 * @param arr integer array whose elements are being randomly generated by the function.
+	 * @param arr array that will have its elements generated by the function, each element
+	 * randomly selected from a range of integers using the `Random` class.
 	 * 
-	 * 	- The function takes an integer array `arr` as input.
-	 * 	- `arr` is an instance of the `int` class.
-	 * 	- The length of `arr` can be determined using the `length` property.
+	 * 	- `arr` is an instance of `int[]`. This means it is an array of integers that can
+	 * store multiple values of type `int`.
+	 * 	- The length of the array is determined by the value of its constructor.
+	 * 	- Each element in the array is accessed through its index, which ranges from 0
+	 * to the length of the array - 1.
 	 */
 	private void randomInt(int[] arr){
 		Random r = new Random();

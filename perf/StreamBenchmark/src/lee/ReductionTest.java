@@ -9,30 +9,36 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
- * is a test class for evaluating the performance of three different methods for
- * summing up the prices of orders in a list, using different programming constructs
- * such as loops, streams, and parallel streams. The test class performs experiments
- * on various lengths of order lists and measures the execution time of each method.
+ * is a Java file that tests various ways of summing up orders based on their prices.
+ * The main method calls the `doTest()` method, which performs the testing. The tester
+ * generates different lengths of order lists and runs the summing methods multiple
+ * times for each list length. The methods tested include `sumOrderForLoop`,
+ * `sumOrderStream`, and `sumOrderParallelStream`. Each method is called on a list
+ * of orders and returns a map with the total price of each user's orders. The tester
+ * also includes some warm-up code to ensure the methods are properly initialized
+ * before running the tests.
  */
 public class ReductionTest {
 
 	/**
-	 * runs a test for reduction.
+	 * calls the `doTest()` method, which performs some operation.
 	 * 
-	 * @param args 1 or more command line arguments passed to the `main` function when
-	 * the program is executed.
+	 * @param args 1 or more command line arguments passed to the `main` method when the
+	 * program is run directly from the command line.
 	 * 
-	 * 	- Length: The `args` array has 0 or more elements, depending on how many command-line
-	 * arguments were passed to the program.
-	 * 	- Elements: Each element in `args` is a String representing a command-line argument.
-	 * 	- Type: The type of each element in `args` is String.
+	 * 	- The function takes an array of strings as input, denoted by `String[] args`.
+	 * 	- The length of the array is not fixed and can vary depending on the invocation
+	 * of the program.
+	 * 	- Each element in the array represents a command-line argument passed to the
+	 * program during execution.
 	 */
 	public static void main(String[] args) {
 		new ReductionTest().doTest();
 	}
 	/**
-	 * generates and sums orders using different loops, streams, and parallel streams,
-	 * measuring the time complexity for each approach.
+	 * performs a series of tests on a list of orders, including generating orders using
+	 * different methods, summing them using loops and stream APIs, and measuring the
+	 * execution time of each method.
 	 */
 	public void doTest(){
 		warmUp();
@@ -77,8 +83,8 @@ public class ReductionTest {
 		}
 	}
 	/**
-	 * generates and processes 10 orders using three different methods: `sumOrderForLoop`,
-	 * `sumOrderStream`, and `sumOrderParallelStream`.
+	 * executes multiple iterations of three different methods for summing a list of
+	 * orders: `sumOrderForLoop`, `sumOrderStream`, and `sumOrderParallelStream`.
 	 */
 	private void warmUp(){
 		List<Order> orders = Order.genOrders(10);
@@ -90,26 +96,35 @@ public class ReductionTest {
 		}
 	}
 	/**
-	 * takes a list of orders as input and creates a map containing the total price of
-	 * each order for a specific user.
+	 * maps a list of orders to a map of user names to total order prices by iterating
+	 * through the list, retrieving and updating the user name to price value in the map
+	 * for each order.
 	 * 
-	 * @param orders list of orders that are to be summed and mapped.
+	 * @param orders list of orders that are being summed and mapped to create a new map.
 	 * 
 	 * 	- `List<Order>` represents an ordered list of `Order` objects.
-	 * 	- Each `Order` object has the following attributes:
-	 * 	+ `UserName`: a string representing the user name associated with the order.
-	 * 	+ `Price`: a double value representing the price of the order.
+	 * 	- Each `Order` object contains attributes such as `getUserName()` for retrieving
+	 * the user name and `getPrice()` for retrieving the price.
 	 * 
-	 * @returns a `Map` object containing the total amount spent by each user in a list
-	 * of orders.
+	 * The function performs operations on each `Order` in the list, updating a map with
+	 * the user name and the total cost for that user. If the map already contains a value
+	 * for the user name, it updates the existing value by adding the price of the current
+	 * `Order`. Otherwise, it initializes the map with the user name and its corresponding
+	 * total cost. Finally, the function returns the updated map.
 	 * 
-	 * 	- The map contains key-value pairs representing the total cost of orders for each
-	 * user.
-	 * 	- Each key in the map is a unique user name, and the corresponding value is the
-	 * total cost of orders for that user.
-	 * 	- If a user has no orders, the value associated with their key is `0`.
-	 * 	- The map is a mutable object, meaning it can be modified by adding or updating
-	 * values.
+	 * @returns a map of user names to their total order value.
+	 * 
+	 * 	- The returned value is a `Map` object containing key-value pairs, where the keys
+	 * are user names and the values are the total amounts spent by each user.
+	 * 	- The map is constructed using a `for` loop that iterates over the elements in
+	 * the `orders` list.
+	 * 	- For each element in the `orders` list, the function checks if the corresponding
+	 * user name exists in the map. If it does, the function updates the value for that
+	 * user name by adding the order's price to the existing total amount. If it doesn't
+	 * exist, the function simply adds the order's price to the map with the user name
+	 * as the key.
+	 * 	- The returned map has a size of `orders.size()` since each element in the list
+	 * is accounted for in the map.
 	 */
 	private Map<String, Double> sumOrderForLoop(List<Order> orders){
 		Map<String, Double> map = new HashMap<>();
@@ -125,20 +140,28 @@ public class ReductionTest {
 		return map;
 	}
 	/**
-	 * aggregates the prices of orders based on the user name, and returns a map of user
-	 * names to total price amounts.
+	 * aggregates the orders by the user name and calculates the total price for each user.
 	 * 
-	 * @param orders list of orders that are being summarized by the function.
+	 * @param orders list of orders that are to be summed and grouped by user name.
 	 * 
-	 * 	- `List<Order>`: A list of `Order` objects representing orders to be summed.
-	 * 	- `Order`: An object with attributes `getUserName()` and `getPrice()`, which
-	 * return a user name and a double value, respectively.
+	 * 	- The `List<Order>` type indicates that the function takes a list of order objects
+	 * as input.
+	 * 	- Each `Order` object in the list has a `getUserName()` method that returns a
+	 * string representing the user name of the order.
+	 * 	- The `getPrice()` method returns a double value representing the price of the order.
 	 * 
-	 * @returns a map of user names to the total price of orders placed by each user.
+	 * The function then uses the `stream().collect()` method to group the orders by user
+	 * name and calculate the total price for each user. The `Collectors` class is used
+	 * to specify the types of the input streams and the aggregation operation (in this
+	 * case, grouping and summing).
 	 * 
-	 * The output is a `Map` containing `String`, `Double` keys and values. This indicates
-	 * that the orders are grouped by user name, and the total price of each order is
-	 * calculated and stored in the map as a double value.
+	 * @returns a map containing the sum of the prices of orders for each user.
+	 * 
+	 * The output is a map whose key is a `String` representing the user name of each
+	 * order, and the value is a `Double` representing the total price of all orders
+	 * associated with that user name. The map is constructed by grouping the orders by
+	 * user name using `Collectors.groupingBy`, and then summing the prices of all orders
+	 * within each group using `Collectors.summingDouble`.
 	 */
 	private Map<String, Double> sumOrderStream(List<Order> orders){
 		return orders.stream().collect(
@@ -146,29 +169,30 @@ public class ReductionTest {
 						Collectors.summingDouble(Order::getPrice)));
 	}
 	/**
-	 * takes a list of orders and returns a map with the user name as key and the total
-	 * price of orders placed by each user as value, calculated by summing the prices of
-	 * the orders for each user in parallel stream.
+	 * collects the prices of orders in a list and groups them by the user name, summing
+	 * the prices for each user.
 	 * 
-	 * @param orders list of orders to be summed.
+	 * @param orders list of orders that will be processed in parallel using the
+	 * `parallelStream()` method to calculate the total price of each order based on the
+	 * user name and sum the results.
 	 * 
-	 * 	- `List<Order>` - The function takes a list of orders as input. Each order has
-	 * multiple attributes like `getUserName`, `getPrice`.
-	 * 	- `parallelStream()` - This method applies the `Collectors.groupingBy()` and
-	 * `Collectors.summingDouble()` methods in parallel, leveraging the efficiency of
-	 * Java 8 stream API.
+	 * The `List<Order>` object contains multiple instances of the `Order` class, which
+	 * has two attributes - `getUserName()` and `getPrice()`. The `getUserName()` attribute
+	 * returns a string representing the user name of the order, while the `getPrice()`
+	 * attribute returns a double value representing the price of the order.
 	 * 
-	 * @returns a map of user names to sum of prices for each user.
+	 * @returns a map of user names to total prices summed from the parallel stream of orders.
 	 * 
-	 * 	- The output is a map data structure where each key is a string representing the
-	 * user name of an order, and each value is a double number representing the total
-	 * price of all orders placed by that user.
-	 * 	- The map is generated using the `collect` method of the `parallelStream` API,
-	 * which takes two functions as arguments: `Collectors.groupingBy(Order::getUserName)`
-	 * to group the orders by user name, and `Collectors.summingDouble(Order::getPrice)`
-	 * to calculate the total price for each user.
-	 * 	- The `parallelStream` method is used to execute the stream of orders in parallel,
-	 * which improves performance when processing large amounts of data.
+	 * 	- The output is a map data structure consisting of key-value pairs, where the
+	 * keys are Strings and the values are Double values.
+	 * 	- The map contains entries corresponding to each order in the input list, with
+	 * the key being the user name of the order and the value being the sum of the prices
+	 * of all orders belonging to that user.
+	 * 	- The output is generated using the `collect` method of the `parallelStream`
+	 * instance, which applies a collector function to the elements of the stream and
+	 * aggregates them into a single result. In this case, the collector function is a
+	 * custom implementation that groups the orders by user name and sums the prices of
+	 * all orders belonging to each user.
 	 */
 	private Map<String, Double> sumOrderParallelStream(List<Order> orders){
 		return orders.parallelStream().collect(
@@ -177,10 +201,12 @@ public class ReductionTest {
 	}
 }
 /**
- * is used to represent an order in a system, with attributes for user name, price,
- * and timestamp. The genOrders method generates a list of orders randomly, with the
- * number of orders per user and the total number of orders controlled by the user.
- * The toString method provides a concise representation of an order as a string.
+ * has several methods for generating and manipulating orders. These include:
+ * 
+ * 	- `genOrders()`: Generates a list of orders with random user names, prices, and
+ * timestamps.
+ * 	- `toString()`: Returns a string representation of an order in the format "user
+ * name::price".
  */
 class Order{
 	private String userName;
@@ -192,7 +218,7 @@ class Order{
 		this.timestamp = timestamp;
 	}
 	/**
-	 * retrieves a user's username.
+	 * returns a string representing the user's name.
 	 * 
 	 * @returns a string representing the user's name.
 	 */
@@ -200,16 +226,15 @@ class Order{
 		return userName;
 	}
 	/**
-	 * Retrieves the price value.
+	 * returns the `price` attribute value.
 	 * 
-	 * @returns the current price of the item.
+	 * @returns the value of the `price` field.
 	 */
 	public double getPrice() {
 		return price;
 	}
 	/**
-	 * retrieves the `timestamp` variable, which represents a system-specific timestamp
-	 * value.
+	 * returns the current timestamp value stored in the `timestamp` field.
 	 * 
 	 * @returns a long value representing the current timestamp.
 	 */
@@ -217,28 +242,25 @@ class Order{
 		return timestamp;
 	}
 	/**
-	 * generates a list of `Order` objects with varying prices and user names, simulating
-	 * orders placed by multiple users.
+	 * generates a list of `Order` objects based on user input parameters. It creates a
+	 * random number of users, and for each user, it generates a unique name and adds an
+	 * order with a randomly generated price and creation time. The resulting list of
+	 * orders is returned.
 	 * 
 	 * @param listLength total number of orders to be generated in the function, and it
-	 * is used to determine the number of users and the size of each user's order list.
+	 * is used to determine the number of users and the size of the list returned by the
+	 * function.
 	 * 
-	 * @returns a list of `Order` objects containing random user names, prices, and timestamps.
+	 * @returns a list of `Order` objects, each representing an order with a unique user
+	 * name, price, and timestamp.
 	 * 
-	 * 	- The list is of type `List<Order>`, indicating that it is a collection of Order
-	 * objects.
-	 * 	- The list contains `listLength` elements, where `listLength` is the input parameter
-	 * passed to the function.
-	 * 	- Each element in the list is an instance of Order, representing a single order
-	 * generated randomly.
-	 * 	- The Order objects contain three attributes: user name, price, and timestamp,
-	 * which are generated randomly using `Random` instances.
-	 * 	- The user name is a unique identifier generated using `UUID.randomUUID()`,
-	 * ensuring that each order has a distinct user name.
-	 * 	- The price of each order is generated randomly between 0 and 1000, representing
-	 * the random cost of the order.
-	 * 	- The timestamp is generated using `System.nanoTime()` and represents the time
-	 * at which the order was generated.
+	 * 	- `List<Order>`: The function returns a list of orders.
+	 * 	- `Order`: Each element in the list is an instance of the `Order` class, representing
+	 * a single order.
+	 * 	- `String userName`: Each order has a unique user name associated with it.
+	 * 	- `double price`: Each order has a randomly generated price between 1 and 1000.
+	 * 	- `long timestamp`: Each order has a timestamp in nanoseconds representing when
+	 * the order was created.
 	 */
 	public static List<Order> genOrders(int listLength){
 		ArrayList<Order> list = new ArrayList<>(listLength);
@@ -257,9 +279,12 @@ class Order{
 		return list;
 	}
 	/**
-	 * generates a string representation of an object by combining its user name and price.
+	 * generates a string representation of an object by combining the user name and price.
 	 * 
-	 * @returns a concatenation of the user name and price.
+	 * @returns a string consisting of the user name followed by a colon and then the price.
+	 * 
+	 * 	- `userName`: A string value representing the user's name.
+	 * 	- `price`: An integer value representing the price of the item.
 	 */
 	@Override
 	public String toString(){
