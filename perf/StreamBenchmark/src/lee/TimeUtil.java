@@ -1,21 +1,23 @@
 package lee;
 
 /**
- * is a utility class that provides three methods for printing the time elapsed in
- * milliseconds (ms), microseconds (us), and average us based on nanoseconds (ns).
- * The methods take a start time as input and print the time difference with respect
- * to the current system time.
+ * in Java provides three methods for calculating and printing time elapsed in
+ * milliseconds, microseconds, and average microseconds based on nanosecond resolution.
+ * The methods take a start time as input and calculate the time difference with
+ * respect to the current system time, printing the result along with a message.
+ * Additionally, there is an averaging method that calculates and prints the average
+ * execution time for a given number of iterations using high-accuracy nanosecond resolution.
  */
 public class TimeUtil {
 	/**
-	 * takes a start time and message as input, calculates the time difference in
-	 * milliseconds since the start time, and prints the result to the console along with
-	 * the message.
+	 * takes a starting time and a message as input, calculates the elapsed time in
+	 * milliseconds since the start of the function using `System.currentTimeMillis()`,
+	 * and prints the elapsed time and message to the console.
 	 * 
-	 * @param startTime time at which the measurement of the elapsed time should begin,
-	 * which is then used to calculate the elapsed time in milliseconds.
+	 * @param startTime time at which the measurement of milliseconds took place, and it
+	 * is used to calculate the difference between the current time and the starting time.
 	 * 
-	 * @param msg message that will be printed along with the elapsed time in milliseconds.
+	 * @param msg message to be printed along with the elapsed time in milliseconds.
 	 */
 	public static void outTimeMs(long startTime, String msg){
 		long ms = System.currentTimeMillis()-startTime;
@@ -23,11 +25,12 @@ public class TimeUtil {
 		
 	}
 	/**
-	 * calculates and prints the time taken in microseconds (μs) for a given task, based
-	 * on the difference between the current time and the start time, adjusted by 500 μs.
+	 * calculates and prints the time taken in microseconds (μs) for a given task,
+	 * subtracting 500 μs from the system's current time since initialization and dividing
+	 * the result by 1000.
 	 * 
-	 * @param startTime start time of the measurement in milliseconds, which is subtracted
-	 * from the current system time to calculate the elapsed time in milliseconds.
+	 * @param startTime start time of a measurement in milliseconds, which is used to
+	 * calculate the elapsed time in microseconds and print it along with the message.
 	 * 
 	 * @param msg message to be printed along with the elapsed time in milliseconds.
 	 */
@@ -36,12 +39,12 @@ public class TimeUtil {
 		System.out.println(msg + " " + us + " us");
 	}
 	/**
-	 * calculates and prints the average time taken for a given number of iterations,
-	 * using nanosecond resolution to provide high accuracy.
+	 * calculates and prints the average execution time in microseconds for a given number
+	 * of iterations, using the `System.nanoTime()` method to measure the time taken.
 	 * 
-	 * @param startTime time at which the measurement of execution time began.
+	 * @param startTime time at which the execution of the code began.
 	 * 
-	 * @param msg message to be printed along with the average execution time calculation.
+	 * @param msg message to be printed along with the average execution time in microseconds.
 	 * 
 	 * @param times number of measurements to average when calculating the average execution
 	 * time for the given task.
