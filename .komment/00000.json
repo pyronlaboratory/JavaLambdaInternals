@@ -1,0 +1,1063 @@
+[
+  {
+    "name": "IntTest.java",
+    "path": "perf/StreamBenchmark/src/lee/IntTest.java",
+    "content": {
+      "structured": {
+        "description": "A `IntTest` class with a single `main` method that creates an instance of the class and calls its `doTest()` method. The `doTest()` method initializes arrays of different sizes and loops through each array element to perform various operations, including using `minIntFor`, `minIntStream`, and `minIntParallelStream` methods to calculate the minimum value in the array. These methods use different approaches to find the minimum value, such as sequential, parallel streaming, or parallel processing with a single thread. The code also includes a `warmUp()` method that performs similar operations to prepare the arrays for testing.",
+        "items": [
+          {
+            "id": "863dcc91-dbaa-1a97-1044-30df88e183f7",
+            "ancestors": [],
+            "type": "function",
+            "description": "has a `main` method that calls the `doTest` method, which performs various tests on an array of integers. The `doTest` method first calls the `warmUp` method, which runs random integer operations on an array of size 100. Then, it loops through multiple iterations of three different methods to compare the results: `minIntFor`, `minIntStream`, and `minIntParallelStream`. Each of these methods performs a minimal integer calculation on a given array length and compares the results.",
+            "name": "IntTest",
+            "code": "public class IntTest {\n\n\tpublic static void main(String[] args) {\n\t\tnew IntTest().doTest();\n\t}\n\tpublic void doTest(){\n\t\twarmUp();\n\t\tint[] lengths = {\n\t\t\t\t10000, \n\t\t\t\t100000, \n\t\t\t\t1000000, \n\t\t\t\t10000000, \n\t\t\t\t100000000, \n\t\t\t\t1000000000\n\t\t\t};\n\t\tfor(int length : lengths){\n\t\t\tSystem.out.println(String.format(\"---array length: %d---\", length));\n\t\t\tint[] arr = new int[length];\n\t\t\trandomInt(arr);\n\t\t\t\n\t\t\tint times = 4;\n\t\t\tint min1 = 1;\n\t\t\tint min2 = 2;\n\t\t\tint min3 = 3;\n\t\t\tlong startTime;\n\t\t\t\n\t\t\tstartTime = System.nanoTime();\n\t\t\tfor(int i=0; i<times; i++){\n\t\t\t\tmin1 = minIntFor(arr);\n\t\t\t}\n\t\t\tTimeUtil.outTimeUs(startTime, \"minIntFor time:\", times);\n\t\t\t\n\t\t\tstartTime = System.nanoTime();\n\t\t\tfor(int i=0; i<times; i++){\n\t\t\t\tmin2 = minIntStream(arr);\n\t\t\t}\n\t\t\tTimeUtil.outTimeUs(startTime, \"minIntStream time:\", times);\n\t\t\t\n\t\t\tstartTime = System.nanoTime();\n\t\t\tfor(int i=0; i<times; i++){\n\t\t\t\tmin3 = minIntParallelStream(arr);\n\t\t\t}\n\t\t\tTimeUtil.outTimeUs(startTime, \"minIntParallelStream time:\", times);\n\t\t\t\n\t\t\t\n\t\t\tSystem.out.println(min1==min2 && min2==min3);\n\t\t}\n\t}\n\tprivate void warmUp(){\n\t\tint[] arr = new int[100];\n\t\trandomInt(arr);\n\t\tfor(int i=0; i<20000; i++){\n//\t\t\tminIntFor(arr);\n\t\t\tminIntStream(arr);\n\t\t\tminIntParallelStream(arr);\n\t\t\t\n\t\t}\n\t}\n\tprivate int minIntFor(int[] arr){\n\t\tint min = Integer.MAX_VALUE;\n\t\tfor(int i=0; i<arr.length; i++){\n\t\t\tif(arr[i]<min)\n\t\t\t\tmin = arr[i];\n\t\t}\n\t\treturn min;\n\t}\n\tprivate int minIntStream(int[] arr){\n\t\treturn Arrays.stream(arr).min().getAsInt();\n\t}\n\tprivate int minIntParallelStream(int[] arr){\n\t\treturn Arrays.stream(arr).parallel().min().getAsInt();\n\t}\n\tprivate void randomInt(int[] arr){\n\t\tRandom r = new Random();\n\t\tfor(int i=0; i<arr.length; i++){\n\t\t\tarr[i] = r.nextInt();\n\t\t}\n\t}\n}",
+            "location": {
+              "start": 11,
+              "insert": 5,
+              "offset": " ",
+              "indent": 0,
+              "comment": {
+                "start": 4,
+                "end": 10
+              }
+            },
+            "item_type": "class",
+            "length": 79,
+            "docLength": 6
+          },
+          {
+            "id": "d25b9249-dad2-88a4-f54d-8e425c605c45",
+            "ancestors": [
+              "863dcc91-dbaa-1a97-1044-30df88e183f7"
+            ],
+            "type": "function",
+            "description": "executes a test for integers.",
+            "params": [
+              {
+                "name": "args",
+                "type_name": "String[]",
+                "description": "1 or more command line arguments passed to the program when it is launched, and are provided as an array to the `main()` method for processing.\n\n* Length: The `args` array has 0 or more elements, as declared in the function signature.\n* Element types: Each element of `args` is a String object.\n* Optional arguments: There are no optional arguments provided in the example code.",
+                "complex_type": true
+              }
+            ],
+            "name": "main",
+            "code": "public static void main(String[] args) {\n\t\tnew IntTest().doTest();\n\t}",
+            "location": {
+              "start": 13,
+              "insert": 13,
+              "offset": "\t",
+              "indent": 1,
+              "comment": null
+            },
+            "item_type": "method",
+            "length": 3,
+            "docLength": null
+          },
+          {
+            "id": "43a6b78e-b83e-0cad-c546-c0fb7a1f546d",
+            "ancestors": [
+              "863dcc91-dbaa-1a97-1044-30df88e183f7"
+            ],
+            "type": "function",
+            "description": "performs a series of tests on an array of integers, including measuring the time complexity of various methods for finding the minimum integer in the array using nanotime and TimeUtil classes.",
+            "params": [],
+            "usage": {
+              "language": "java",
+              "code": "IntTest intTest = new IntTest();\nintTest.doTest();\n",
+              "description": ""
+            },
+            "name": "doTest",
+            "code": "public void doTest(){\n\t\twarmUp();\n\t\tint[] lengths = {\n\t\t\t\t10000, \n\t\t\t\t100000, \n\t\t\t\t1000000, \n\t\t\t\t10000000, \n\t\t\t\t100000000, \n\t\t\t\t1000000000\n\t\t\t};\n\t\tfor(int length : lengths){\n\t\t\tSystem.out.println(String.format(\"---array length: %d---\", length));\n\t\t\tint[] arr = new int[length];\n\t\t\trandomInt(arr);\n\t\t\t\n\t\t\tint times = 4;\n\t\t\tint min1 = 1;\n\t\t\tint min2 = 2;\n\t\t\tint min3 = 3;\n\t\t\tlong startTime;\n\t\t\t\n\t\t\tstartTime = System.nanoTime();\n\t\t\tfor(int i=0; i<times; i++){\n\t\t\t\tmin1 = minIntFor(arr);\n\t\t\t}\n\t\t\tTimeUtil.outTimeUs(startTime, \"minIntFor time:\", times);\n\t\t\t\n\t\t\tstartTime = System.nanoTime();\n\t\t\tfor(int i=0; i<times; i++){\n\t\t\t\tmin2 = minIntStream(arr);\n\t\t\t}\n\t\t\tTimeUtil.outTimeUs(startTime, \"minIntStream time:\", times);\n\t\t\t\n\t\t\tstartTime = System.nanoTime();\n\t\t\tfor(int i=0; i<times; i++){\n\t\t\t\tmin3 = minIntParallelStream(arr);\n\t\t\t}\n\t\t\tTimeUtil.outTimeUs(startTime, \"minIntParallelStream time:\", times);\n\t\t\t\n\t\t\t\n\t\t\tSystem.out.println(min1==min2 && min2==min3);\n\t\t}\n\t}",
+            "location": {
+              "start": 16,
+              "insert": 16,
+              "offset": "\t",
+              "indent": 1,
+              "comment": null
+            },
+            "item_type": "method",
+            "length": 43,
+            "docLength": null
+          },
+          {
+            "id": "e37e24df-0fdd-918f-9148-269b8cdcff36",
+            "ancestors": [
+              "863dcc91-dbaa-1a97-1044-30df88e183f7"
+            ],
+            "type": "function",
+            "description": "performs random integer generation, min-int computations using various methods (for loop, Stream, and Parallel Stream), and iterates over 20000 times to prepare the system for future tasks.",
+            "params": [],
+            "usage": {
+              "language": "java",
+              "code": "IntTest intTest = new IntTest();\nint[] arr = new int[100];\nrandomInt(arr);\nfor (int i = 0; i < 20000; i++) {\n    minIntFor(arr);\n}\n",
+              "description": ""
+            },
+            "name": "warmUp",
+            "code": "private void warmUp(){\n\t\tint[] arr = new int[100];\n\t\trandomInt(arr);\n\t\tfor(int i=0; i<20000; i++){\n//\t\t\tminIntFor(arr);\n\t\t\tminIntStream(arr);\n\t\t\tminIntParallelStream(arr);\n\t\t\t\n\t\t}\n\t}",
+            "location": {
+              "start": 59,
+              "insert": 59,
+              "offset": "\t",
+              "indent": 1,
+              "comment": null
+            },
+            "item_type": "method",
+            "length": 10,
+            "docLength": null
+          },
+          {
+            "id": "a8d116b8-6e04-518d-4c48-07feef1a084e",
+            "ancestors": [
+              "863dcc91-dbaa-1a97-1044-30df88e183f7"
+            ],
+            "type": "function",
+            "description": "takes an integer array as input and returns the smallest value present in the array. It does so by iterating through the elements of the array, comparing each one to the current minimum value, and updating the minimum value accordingly.",
+            "params": [
+              {
+                "name": "arr",
+                "type_name": "int[]",
+                "description": "array whose minimum integer value is to be found.\n\n* `arr` is an array of integers, with a length of `arr.length`.\n* Each element in the array can take on any integer value within the range of `-2^31` to `2^31-1`, inclusive of zero.",
+                "complex_type": true
+              }
+            ],
+            "returns": {
+              "type_name": "int",
+              "description": "the smallest integer value among the input array elements.",
+              "complex_type": false
+            },
+            "usage": {
+              "language": "java",
+              "code": "public static void main(String[] args) {\n    // Example input for 'arr'\n    int[] arr = new int[]{1, 2, 3, 4, 5};\n\n    // Calling the method with the example input\n    System.out.println(minIntFor(arr));\n}\n",
+              "description": "\nThe output of this program would be:\n"
+            },
+            "name": "minIntFor",
+            "code": "private int minIntFor(int[] arr){\n\t\tint min = Integer.MAX_VALUE;\n\t\tfor(int i=0; i<arr.length; i++){\n\t\t\tif(arr[i]<min)\n\t\t\t\tmin = arr[i];\n\t\t}\n\t\treturn min;\n\t}",
+            "location": {
+              "start": 69,
+              "insert": 69,
+              "offset": "\t",
+              "indent": 1,
+              "comment": null
+            },
+            "item_type": "method",
+            "length": 8,
+            "docLength": null
+          },
+          {
+            "id": "2d0198c1-5125-f084-3e44-0631c09c4429",
+            "ancestors": [
+              "863dcc91-dbaa-1a97-1044-30df88e183f7"
+            ],
+            "type": "function",
+            "description": "takes an integer array `arr` and returns the minimum value in the array as an int using the `Arrays.stream()` method to stream the elements of the array and the `min()` method to find the minimum value.",
+            "params": [
+              {
+                "name": "arr",
+                "type_name": "int[]",
+                "description": "integer array to be processed by the `minIntStream()` method.\n\n* `arr` is an array of integers.\n* It has at least one element.\n* The elements in the array are not null or empty.",
+                "complex_type": true
+              }
+            ],
+            "returns": {
+              "type_name": "int",
+              "description": "the minimum integer value in the input array.",
+              "complex_type": false
+            },
+            "usage": {
+              "language": "java",
+              "code": "int[] arr = new int[10];\n// populate the array with random values \nrandomInt(arr);\n// find the minimum value in the array using the stream API \nSystem.out.println(minIntStream(arr));\n",
+              "description": ""
+            },
+            "name": "minIntStream",
+            "code": "private int minIntStream(int[] arr){\n\t\treturn Arrays.stream(arr).min().getAsInt();\n\t}",
+            "location": {
+              "start": 77,
+              "insert": 77,
+              "offset": "\t",
+              "indent": 1,
+              "comment": null
+            },
+            "item_type": "method",
+            "length": 3,
+            "docLength": null
+          },
+          {
+            "id": "ecb14316-74b0-7eb5-c545-a9070b02331a",
+            "ancestors": [
+              "863dcc91-dbaa-1a97-1044-30df88e183f7"
+            ],
+            "type": "function",
+            "description": "takes an integer array and returns the minimum value in the array using a parallel stream.",
+            "params": [
+              {
+                "name": "arr",
+                "type_name": "int[]",
+                "description": "1D array of integers that is processed by the `minIntParallelStream()` method.\n\n* `arr` is an array of integers with unspecified size and shape.\n* The elements in `arr` can take on any valid integer value.\n* `Arrays.stream(arr)` creates a parallel stream of integers from the elements of `arr`.",
+                "complex_type": true
+              }
+            ],
+            "returns": {
+              "type_name": "int",
+              "description": "the minimum integer value in the input array.",
+              "complex_type": false
+            },
+            "usage": {
+              "language": "java",
+              "code": "public class Example{\n    public static void main(String[] args) {\n        int[] arr = new int[10];\n        for (int i = 0; i < arr.length; i++) {\n            arr[i] = (int)(Math.random() * 10); // Generate random numbers between 0 and 10 inclusive\n        }\n        \n        int min = IntTest.minIntParallelStream(arr);\n        System.out.println(\"Minimum value in the array: \" + min); // Output: Minimum value in the array: 2\n    }\n}\n",
+              "description": ""
+            },
+            "name": "minIntParallelStream",
+            "code": "private int minIntParallelStream(int[] arr){\n\t\treturn Arrays.stream(arr).parallel().min().getAsInt();\n\t}",
+            "location": {
+              "start": 80,
+              "insert": 80,
+              "offset": "\t",
+              "indent": 1,
+              "comment": null
+            },
+            "item_type": "method",
+            "length": 3,
+            "docLength": null
+          },
+          {
+            "id": "a4e11eda-7148-f2bd-6a4c-37221a2d0751",
+            "ancestors": [
+              "863dcc91-dbaa-1a97-1044-30df88e183f7"
+            ],
+            "type": "function",
+            "description": "generates a random integer array of specified length, using the `Random` class to generate unique integers.",
+            "params": [
+              {
+                "name": "arr",
+                "type_name": "int[]",
+                "description": "array that will have its elements generated by the function, each element randomly selected from a range of integers using the `Random` class.\n\n* `arr` is an instance of `int[]`. This means it is an array of integers that can store multiple values of type `int`.\n* The length of the array is determined by the value of its constructor.\n* Each element in the array is accessed through its index, which ranges from 0 to the length of the array - 1.",
+                "complex_type": true
+              }
+            ],
+            "usage": {
+              "language": "java",
+              "code": "int[] arr = new int[10];\nrandomInt(arr);\n",
+              "description": ""
+            },
+            "name": "randomInt",
+            "code": "private void randomInt(int[] arr){\n\t\tRandom r = new Random();\n\t\tfor(int i=0; i<arr.length; i++){\n\t\t\tarr[i] = r.nextInt();\n\t\t}\n\t}",
+            "location": {
+              "start": 83,
+              "insert": 83,
+              "offset": "\t",
+              "indent": 1,
+              "comment": null
+            },
+            "item_type": "method",
+            "length": 6,
+            "docLength": null
+          }
+        ]
+      }
+    }
+  },
+  {
+    "name": "ReductionTest.java",
+    "path": "perf/StreamBenchmark/src/lee/ReductionTest.java",
+    "content": {
+      "structured": {
+        "description": "a `ReductionTest` class that contains a `main()` method for running the program and several other methods for testing purposes. The code uses various packages such as `java.util`, `java.lang`, `java.io`, and `java.security`. The main method calls the `doTest()` method, which performs multiple iterations of summing up order data using different approaches, including a for-loop, a stream-based approach, and a parallel stream-based approach. Each iteration generates a list of orders and sums up the prices of the orders for each user. The program also includes a `warmUp()` method that simulates running the `sumOrderForLoop()`, `sumOrderStream()`, and `sumOrderParallelStream()` methods multiple times to speed up the computation. Overall, the code performs aggregation calculations on large datasets using different approaches to measure the performance of each approach.",
+        "items": [
+          {
+            "id": "905b1415-5d99-89a3-a34c-f984d63eee91",
+            "ancestors": [],
+            "type": "function",
+            "description": "is a Java file that tests various ways of summing up orders based on their prices. The main method calls the `doTest()` method, which performs the testing. The tester generates different lengths of order lists and runs the summing methods multiple times for each list length. The methods tested include `sumOrderForLoop`, `sumOrderStream`, and `sumOrderParallelStream`. Each method is called on a list of orders and returns a map with the total price of each user's orders. The tester also includes some warm-up code to ensure the methods are properly initialized before running the tests.",
+            "name": "ReductionTest",
+            "code": "public class ReductionTest {\n\n\tpublic static void main(String[] args) {\n\t\tnew ReductionTest().doTest();\n\t}\n\tpublic void doTest(){\n\t\twarmUp();\n\t\tint[] lengths = {\n\t\t\t\t10000, \n\t\t\t\t100000, \n\t\t\t\t1000000, \n\t\t\t\t10000000, \n\t\t\t\t20000000, \n\t\t\t\t40000000\n\t\t\t};\n\t\tfor(int length : lengths){\n\t\t\tSystem.out.println(String.format(\"---orders length: %d---\", length));\n\t\t\tList<Order> orders = Order.genOrders(length);\n\t\t\tint times = 4;\n\t\t\tMap<String, Double> map1 = null;\n\t\t\tMap<String, Double> map2 = null;\n\t\t\tMap<String, Double> map3 = null;\n\t\t\t\n\t\t\tlong startTime;\n\t\t\t\n\t\t\tstartTime = System.nanoTime();\n\t\t\tfor(int i=0; i<times; i++){\n\t\t\t\tmap1 = sumOrderForLoop(orders);\n\t\t\t}\n\t\t\tTimeUtil.outTimeUs(startTime, \"sumOrderForLoop time:\", times);\n\t\t\t\n\t\t\tstartTime = System.nanoTime();\n\t\t\tfor(int i=0; i<times; i++){\n\t\t\t\tmap2 = sumOrderStream(orders);\n\t\t\t}\n\t\t\tTimeUtil.outTimeUs(startTime, \"sumOrderStream time:\", times);\n\n\t\t\tstartTime = System.nanoTime();\n\t\t\tfor(int i=0; i<times; i++){\n\t\t\t\tmap3 = sumOrderParallelStream(orders);\t\n\t\t\t}\n\t\t\tTimeUtil.outTimeUs(startTime, \"sumOrderParallelStream time:\", times);\n\t\t\t\n\t\t\tSystem.out.println(\"users=\" + map3.size());\n\t\t\n\t\t}\n\t}\n\tprivate void warmUp(){\n\t\tList<Order> orders = Order.genOrders(10);\n\t\tfor(int i=0; i<20000; i++){\n\t\t\tsumOrderForLoop(orders);\n\t\t\tsumOrderStream(orders);\n\t\t\tsumOrderParallelStream(orders);\n\t\t\t\n\t\t}\n\t}\n\tprivate Map<String, Double> sumOrderForLoop(List<Order> orders){\n\t\tMap<String, Double> map = new HashMap<>();\n\t\tfor(Order od : orders){\n\t\t\tString userName = od.getUserName();\n\t\t\tDouble v; \n\t\t\tif((v=map.get(userName)) != null){\n\t\t\t\tmap.put(userName, v+od.getPrice());\n\t\t\t}else{\n\t\t\t\tmap.put(userName, od.getPrice());\n\t\t\t}\n\t\t}\n\t\treturn map;\n\t}\n\tprivate Map<String, Double> sumOrderStream(List<Order> orders){\n\t\treturn orders.stream().collect(\n\t\t\t\tCollectors.groupingBy(Order::getUserName, \n\t\t\t\t\t\tCollectors.summingDouble(Order::getPrice)));\n\t}\n\tprivate Map<String, Double> sumOrderParallelStream(List<Order> orders){\n\t\treturn orders.parallelStream().collect(\n\t\t\t\tCollectors.groupingBy(Order::getUserName, \n\t\t\t\t\t\tCollectors.summingDouble(Order::getPrice)));\n\t}\n}",
+            "location": {
+              "start": 17,
+              "insert": 11,
+              "offset": " ",
+              "indent": 0,
+              "comment": {
+                "start": 10,
+                "end": 16
+              }
+            },
+            "item_type": "class",
+            "length": 80,
+            "docLength": 6
+          },
+          {
+            "id": "64d5cb27-1e84-2cbc-3d49-56159d26916c",
+            "ancestors": [
+              "905b1415-5d99-89a3-a34c-f984d63eee91"
+            ],
+            "type": "function",
+            "description": "calls the `doTest()` method, which performs some operation.",
+            "params": [
+              {
+                "name": "args",
+                "type_name": "String[]",
+                "description": "1 or more command line arguments passed to the `main` method when the program is run directly from the command line.\n\n* The function takes an array of strings as input, denoted by `String[] args`.\n* The length of the array is not fixed and can vary depending on the invocation of the program.\n* Each element in the array represents a command-line argument passed to the program during execution.",
+                "complex_type": true
+              }
+            ],
+            "name": "main",
+            "code": "public static void main(String[] args) {\n\t\tnew ReductionTest().doTest();\n\t}",
+            "location": {
+              "start": 19,
+              "insert": 19,
+              "offset": "\t",
+              "indent": 1,
+              "comment": null
+            },
+            "item_type": "method",
+            "length": 3,
+            "docLength": null
+          },
+          {
+            "id": "5c168e18-a3a4-8aa5-b146-4567a8718aef",
+            "ancestors": [
+              "905b1415-5d99-89a3-a34c-f984d63eee91"
+            ],
+            "type": "function",
+            "description": "performs a series of tests on a list of orders, including generating orders using different methods, summing them using loops and stream APIs, and measuring the execution time of each method.",
+            "params": [],
+            "usage": {
+              "language": "java",
+              "code": "public class OrderFinder {\n    public static void main(String[] args) {\n        // Instantiate an OrderFinder object\n        OrderFinder finder = new OrderFinder();\n        \n        // Call the doTest() method on the finder object\n        finder.doTest();\n    }\n}\n",
+              "description": "\nThis would call the doTest() method of the OrderFinder class, which would then proceed to test the code within the method."
+            },
+            "name": "doTest",
+            "code": "public void doTest(){\n\t\twarmUp();\n\t\tint[] lengths = {\n\t\t\t\t10000, \n\t\t\t\t100000, \n\t\t\t\t1000000, \n\t\t\t\t10000000, \n\t\t\t\t20000000, \n\t\t\t\t40000000\n\t\t\t};\n\t\tfor(int length : lengths){\n\t\t\tSystem.out.println(String.format(\"---orders length: %d---\", length));\n\t\t\tList<Order> orders = Order.genOrders(length);\n\t\t\tint times = 4;\n\t\t\tMap<String, Double> map1 = null;\n\t\t\tMap<String, Double> map2 = null;\n\t\t\tMap<String, Double> map3 = null;\n\t\t\t\n\t\t\tlong startTime;\n\t\t\t\n\t\t\tstartTime = System.nanoTime();\n\t\t\tfor(int i=0; i<times; i++){\n\t\t\t\tmap1 = sumOrderForLoop(orders);\n\t\t\t}\n\t\t\tTimeUtil.outTimeUs(startTime, \"sumOrderForLoop time:\", times);\n\t\t\t\n\t\t\tstartTime = System.nanoTime();\n\t\t\tfor(int i=0; i<times; i++){\n\t\t\t\tmap2 = sumOrderStream(orders);\n\t\t\t}\n\t\t\tTimeUtil.outTimeUs(startTime, \"sumOrderStream time:\", times);\n\n\t\t\tstartTime = System.nanoTime();\n\t\t\tfor(int i=0; i<times; i++){\n\t\t\t\tmap3 = sumOrderParallelStream(orders);\t\n\t\t\t}\n\t\t\tTimeUtil.outTimeUs(startTime, \"sumOrderParallelStream time:\", times);\n\t\t\t\n\t\t\tSystem.out.println(\"users=\" + map3.size());\n\t\t\n\t\t}\n\t}",
+            "location": {
+              "start": 22,
+              "insert": 22,
+              "offset": "\t",
+              "indent": 1,
+              "comment": null
+            },
+            "item_type": "method",
+            "length": 42,
+            "docLength": null
+          },
+          {
+            "id": "1a481b34-c726-3196-bd4e-61bff025af8d",
+            "ancestors": [
+              "905b1415-5d99-89a3-a34c-f984d63eee91"
+            ],
+            "type": "function",
+            "description": "executes multiple iterations of three different methods for summing a list of orders: `sumOrderForLoop`, `sumOrderStream`, and `sumOrderParallelStream`.",
+            "params": [],
+            "usage": {
+              "language": "java",
+              "code": "private void warmUp(){\n\t\tList<Order> orders = Order.genOrders(10);\n\t\tfor(int i=0; i<20000; i++){\n\t\t\tsumOrderForLoop(orders);\n\t\t\tsumOrderStream(orders);\n\t\t\tsumOrderParallelStream(orders);\n\t\t}\n\t}\n",
+              "description": ""
+            },
+            "name": "warmUp",
+            "code": "private void warmUp(){\n\t\tList<Order> orders = Order.genOrders(10);\n\t\tfor(int i=0; i<20000; i++){\n\t\t\tsumOrderForLoop(orders);\n\t\t\tsumOrderStream(orders);\n\t\t\tsumOrderParallelStream(orders);\n\t\t\t\n\t\t}\n\t}",
+            "location": {
+              "start": 64,
+              "insert": 64,
+              "offset": "\t",
+              "indent": 1,
+              "comment": null
+            },
+            "item_type": "method",
+            "length": 9,
+            "docLength": null
+          },
+          {
+            "id": "a19dbdd9-40bc-ba94-3545-1393c168ffd3",
+            "ancestors": [
+              "905b1415-5d99-89a3-a34c-f984d63eee91"
+            ],
+            "type": "function",
+            "description": "maps a list of orders to a map of user names to total order prices by iterating through the list, retrieving and updating the user name to price value in the map for each order.",
+            "params": [
+              {
+                "name": "orders",
+                "type_name": "List<Order>",
+                "description": "list of orders that are being summed and mapped to create a new map.\n\n* `List<Order>` represents an ordered list of `Order` objects.\n* Each `Order` object contains attributes such as `getUserName()` for retrieving the user name and `getPrice()` for retrieving the price.\n\nThe function performs operations on each `Order` in the list, updating a map with the user name and the total cost for that user. If the map already contains a value for the user name, it updates the existing value by adding the price of the current `Order`. Otherwise, it initializes the map with the user name and its corresponding total cost. Finally, the function returns the updated map.",
+                "complex_type": true
+              }
+            ],
+            "returns": {
+              "type_name": "MapString",
+              "description": "a map of user names to their total order value.\n\n* The returned value is a `Map` object containing key-value pairs, where the keys are user names and the values are the total amounts spent by each user.\n* The map is constructed using a `for` loop that iterates over the elements in the `orders` list.\n* For each element in the `orders` list, the function checks if the corresponding user name exists in the map. If it does, the function updates the value for that user name by adding the order's price to the existing total amount. If it doesn't exist, the function simply adds the order's price to the map with the user name as the key.\n* The returned map has a size of `orders.size()` since each element in the list is accounted for in the map.",
+              "complex_type": true
+            },
+            "usage": {
+              "language": "java",
+              "code": "public static void main(String[] args) {\n\t\tList<Order> orders = Order.genOrders(10);\n\t\tMap<String, Double> map = new ReductionTest().sumOrderForLoop(orders);\n\t}\n",
+              "description": ""
+            },
+            "name": "sumOrderForLoop",
+            "code": "private Map<String, Double> sumOrderForLoop(List<Order> orders){\n\t\tMap<String, Double> map = new HashMap<>();\n\t\tfor(Order od : orders){\n\t\t\tString userName = od.getUserName();\n\t\t\tDouble v; \n\t\t\tif((v=map.get(userName)) != null){\n\t\t\t\tmap.put(userName, v+od.getPrice());\n\t\t\t}else{\n\t\t\t\tmap.put(userName, od.getPrice());\n\t\t\t}\n\t\t}\n\t\treturn map;\n\t}",
+            "location": {
+              "start": 73,
+              "insert": 73,
+              "offset": "\t",
+              "indent": 1,
+              "comment": null
+            },
+            "item_type": "method",
+            "length": 13,
+            "docLength": null
+          },
+          {
+            "id": "bd7c6c47-07e0-e39c-f345-d1d7d3e69bb0",
+            "ancestors": [
+              "905b1415-5d99-89a3-a34c-f984d63eee91"
+            ],
+            "type": "function",
+            "description": "aggregates the orders by the user name and calculates the total price for each user.",
+            "params": [
+              {
+                "name": "orders",
+                "type_name": "List<Order>",
+                "description": "list of orders that are to be summed and grouped by user name.\n\n* The `List<Order>` type indicates that the function takes a list of order objects as input.\n* Each `Order` object in the list has a `getUserName()` method that returns a string representing the user name of the order.\n* The `getPrice()` method returns a double value representing the price of the order.\n\nThe function then uses the `stream().collect()` method to group the orders by user name and calculate the total price for each user. The `Collectors` class is used to specify the types of the input streams and the aggregation operation (in this case, grouping and summing).",
+                "complex_type": true
+              }
+            ],
+            "returns": {
+              "type_name": "MapString",
+              "description": "a map containing the sum of the prices of orders for each user.\n\nThe output is a map whose key is a `String` representing the user name of each order, and the value is a `Double` representing the total price of all orders associated with that user name. The map is constructed by grouping the orders by user name using `Collectors.groupingBy`, and then summing the prices of all orders within each group using `Collectors.summingDouble`.",
+              "complex_type": true
+            },
+            "usage": {
+              "language": "java",
+              "code": "import java.util.ArrayList;\nimport java.util.List;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<Order> orders = new ArrayList<>();\n        Order order1 = new Order(\"User1\", 20, System.currentTimeMillis());\n        Order order2 = new Order(\"User2\", 40, System.currentTimeMillis());\n        orders.add(order1);\n        orders.add(order2);\n        Map<String, Double> sumOrderStreamOutput = sumOrderStream(orders);\n    }\n\n    private static Map<String, Double> sumOrderStream(List<Order> orders) {\n        return orders.stream().collect(Collectors.groupingBy(Order::getUserName, Collectors.summingDouble(Order::getPrice)));\n    }\n}\n",
+              "description": ""
+            },
+            "name": "sumOrderStream",
+            "code": "private Map<String, Double> sumOrderStream(List<Order> orders){\n\t\treturn orders.stream().collect(\n\t\t\t\tCollectors.groupingBy(Order::getUserName, \n\t\t\t\t\t\tCollectors.summingDouble(Order::getPrice)));\n\t}",
+            "location": {
+              "start": 86,
+              "insert": 86,
+              "offset": "\t",
+              "indent": 1,
+              "comment": null
+            },
+            "item_type": "method",
+            "length": 5,
+            "docLength": null
+          },
+          {
+            "id": "dda40a1b-384f-a496-e644-1085bf06de4b",
+            "ancestors": [
+              "905b1415-5d99-89a3-a34c-f984d63eee91"
+            ],
+            "type": "function",
+            "description": "collects the prices of orders in a list and groups them by the user name, summing the prices for each user.",
+            "params": [
+              {
+                "name": "orders",
+                "type_name": "List<Order>",
+                "description": "list of orders that will be processed in parallel using the `parallelStream()` method to calculate the total price of each order based on the user name and sum the results.\n\nThe `List<Order>` object contains multiple instances of the `Order` class, which has two attributes - `getUserName()` and `getPrice()`. The `getUserName()` attribute returns a string representing the user name of the order, while the `getPrice()` attribute returns a double value representing the price of the order.",
+                "complex_type": true
+              }
+            ],
+            "returns": {
+              "type_name": "MapString",
+              "description": "a map of user names to total prices summed from the parallel stream of orders.\n\n* The output is a map data structure consisting of key-value pairs, where the keys are Strings and the values are Double values.\n* The map contains entries corresponding to each order in the input list, with the key being the user name of the order and the value being the sum of the prices of all orders belonging to that user.\n* The output is generated using the `collect` method of the `parallelStream` instance, which applies a collector function to the elements of the stream and aggregates them into a single result. In this case, the collector function is a custom implementation that groups the orders by user name and sums the prices of all orders belonging to each user.",
+              "complex_type": true
+            },
+            "usage": {
+              "language": "java",
+              "code": "List<Order> orders = Order.genOrders(10);\nMap<String, Double> map3 = ReductionTest.sumOrderParallelStream(orders);\nSystem.out.println(\"users=\" + map3.size());\n",
+              "description": "\nThe example uses the method sumOrderParallelStream() from the class ReductionTest to create a Map object that contains user names as keys and their corresponding prices as values, calculated based on a list of Order objects passed in as an argument."
+            },
+            "name": "sumOrderParallelStream",
+            "code": "private Map<String, Double> sumOrderParallelStream(List<Order> orders){\n\t\treturn orders.parallelStream().collect(\n\t\t\t\tCollectors.groupingBy(Order::getUserName, \n\t\t\t\t\t\tCollectors.summingDouble(Order::getPrice)));\n\t}",
+            "location": {
+              "start": 91,
+              "insert": 91,
+              "offset": "\t",
+              "indent": 1,
+              "comment": null
+            },
+            "item_type": "method",
+            "length": 5,
+            "docLength": null
+          },
+          {
+            "id": "c81f6a40-d51c-0c8d-7948-dee480df477e",
+            "ancestors": [],
+            "type": "function",
+            "description": "has several methods for generating and manipulating orders. These include:\n\n* `genOrders()`: Generates a list of orders with random user names, prices, and timestamps.\n* `toString()`: Returns a string representation of an order in the format \"user name::price\".",
+            "name": "Order",
+            "code": "class Order{\n\tprivate String userName;\n\tprivate double price;\n\tprivate long timestamp;\n\tpublic Order(String userName, double price, long timestamp) {\n\t\tthis.userName = userName;\n\t\tthis.price = price;\n\t\tthis.timestamp = timestamp;\n\t}\n\tpublic String getUserName() {\n\t\treturn userName;\n\t}\n\tpublic double getPrice() {\n\t\treturn price;\n\t}\n\tpublic long getTimestamp() {\n\t\treturn timestamp;\n\t}\n\tpublic static List<Order> genOrders(int listLength){\n\t\tArrayList<Order> list = new ArrayList<>(listLength);\n\t\tRandom rand = new Random();\n\t\tint users = listLength/200;// 200 orders per user\n\t\tusers = users==0 ? listLength : users;\n\t\tArrayList<String> userNames = new ArrayList<>(users);\n\t\tfor(int i=0; i<users; i++){\n\t\t\tuserNames.add(UUID.randomUUID().toString());\n\t\t}\n\t\tfor(int i=0; i<listLength; i++){\n\t\t\tdouble price = rand.nextInt(1000);\n\t\t\tString userName = userNames.get(rand.nextInt(users));\n\t\t\tlist.add(new Order(userName, price, System.nanoTime()));\n\t\t}\n\t\treturn list;\n\t}\n\t@Override\n\tpublic String toString(){\n\t\treturn userName + \"::\" + price;\n\t}\n}",
+            "location": {
+              "start": 97,
+              "insert": 97,
+              "offset": " ",
+              "indent": 0,
+              "comment": null
+            },
+            "item_type": "class",
+            "length": 39,
+            "docLength": null
+          },
+          {
+            "id": "595038f2-cecd-e7a1-5443-9fa180aabcca",
+            "ancestors": [
+              "c81f6a40-d51c-0c8d-7948-dee480df477e"
+            ],
+            "type": "function",
+            "description": "returns a string representing the user's name.",
+            "params": [],
+            "returns": {
+              "type_name": "String",
+              "description": "a string representing the user's name.",
+              "complex_type": false
+            },
+            "usage": {
+              "language": "java",
+              "code": "public class MyClass {\n    public static void main(String[] args) {\n        Order order = new Order(\"John\", 10, 123456789); // create an instance of the Order class\n        String userName = order.getUserName();          // get the username using the method\n        System.out.println(userName);                  // print the username to the console\n    }\n}\n",
+              "description": ""
+            },
+            "name": "getUserName",
+            "code": "public String getUserName() {\n\t\treturn userName;\n\t}",
+            "location": {
+              "start": 106,
+              "insert": 106,
+              "offset": "\t",
+              "indent": 1,
+              "comment": null
+            },
+            "item_type": "method",
+            "length": 3,
+            "docLength": null
+          },
+          {
+            "id": "9ef1891e-2671-bebd-204b-23d5233d60f3",
+            "ancestors": [
+              "c81f6a40-d51c-0c8d-7948-dee480df477e"
+            ],
+            "type": "function",
+            "description": "returns the `price` attribute value.",
+            "params": [],
+            "returns": {
+              "type_name": "double",
+              "description": "the value of the `price` field.",
+              "complex_type": false
+            },
+            "usage": {
+              "language": "java",
+              "code": "//Example usage of getPrice()\npublic class Example {\n    public static void main(String[] args) {\n        Order order = new Order(\"John\", 10.99, 1634528700);\n        System.out.println(order.getPrice()); // output: 10.99\n    }\n}\n",
+              "description": ""
+            },
+            "name": "getPrice",
+            "code": "public double getPrice() {\n\t\treturn price;\n\t}",
+            "location": {
+              "start": 109,
+              "insert": 109,
+              "offset": "\t",
+              "indent": 1,
+              "comment": null
+            },
+            "item_type": "method",
+            "length": 3,
+            "docLength": null
+          },
+          {
+            "id": "83958e77-5de0-9780-6541-33cc78a23735",
+            "ancestors": [
+              "c81f6a40-d51c-0c8d-7948-dee480df477e"
+            ],
+            "type": "function",
+            "description": "returns the current timestamp value stored in the `timestamp` field.",
+            "params": [],
+            "returns": {
+              "type_name": "long",
+              "description": "a long value representing the current timestamp.",
+              "complex_type": false
+            },
+            "usage": {
+              "language": "java",
+              "code": "public class Main {\n\tpublic static void main(String[] args) {\n\t\tOrder order = new Order(\"John\", 100, 1548273697);\n\t\tSystem.out.println(order.getTimestamp());\n\t}\n}\n",
+              "description": ""
+            },
+            "name": "getTimestamp",
+            "code": "public long getTimestamp() {\n\t\treturn timestamp;\n\t}",
+            "location": {
+              "start": 112,
+              "insert": 112,
+              "offset": "\t",
+              "indent": 1,
+              "comment": null
+            },
+            "item_type": "method",
+            "length": 3,
+            "docLength": null
+          },
+          {
+            "id": "3f701817-fa3e-f79b-ba4f-a853a0028883",
+            "ancestors": [
+              "c81f6a40-d51c-0c8d-7948-dee480df477e"
+            ],
+            "type": "function",
+            "description": "generates a list of `Order` objects based on user input parameters. It creates a random number of users, and for each user, it generates a unique name and adds an order with a randomly generated price and creation time. The resulting list of orders is returned.",
+            "params": [
+              {
+                "name": "listLength",
+                "type_name": "int",
+                "description": "total number of orders to be generated in the function, and it is used to determine the number of users and the size of the list returned by the function.",
+                "complex_type": false
+              }
+            ],
+            "returns": {
+              "type_name": "ListOrder",
+              "description": "a list of `Order` objects, each representing an order with a unique user name, price, and timestamp.\n\n* `List<Order>`: The function returns a list of orders.\n* `Order`: Each element in the list is an instance of the `Order` class, representing a single order.\n* `String userName`: Each order has a unique user name associated with it.\n* `double price`: Each order has a randomly generated price between 1 and 1000.\n* `long timestamp`: Each order has a timestamp in nanoseconds representing when the order was created.",
+              "complex_type": true
+            },
+            "name": "genOrders",
+            "code": "public static List<Order> genOrders(int listLength){\n\t\tArrayList<Order> list = new ArrayList<>(listLength);\n\t\tRandom rand = new Random();\n\t\tint users = listLength/200;// 200 orders per user\n\t\tusers = users==0 ? listLength : users;\n\t\tArrayList<String> userNames = new ArrayList<>(users);\n\t\tfor(int i=0; i<users; i++){\n\t\t\tuserNames.add(UUID.randomUUID().toString());\n\t\t}\n\t\tfor(int i=0; i<listLength; i++){\n\t\t\tdouble price = rand.nextInt(1000);\n\t\t\tString userName = userNames.get(rand.nextInt(users));\n\t\t\tlist.add(new Order(userName, price, System.nanoTime()));\n\t\t}\n\t\treturn list;\n\t}",
+            "location": {
+              "start": 115,
+              "insert": 115,
+              "offset": "\t",
+              "indent": 1,
+              "comment": null
+            },
+            "item_type": "method",
+            "length": 16,
+            "docLength": null
+          },
+          {
+            "id": "b194dc0b-c7d3-bdba-4d49-c8919cbbfc62",
+            "ancestors": [
+              "c81f6a40-d51c-0c8d-7948-dee480df477e"
+            ],
+            "type": "function",
+            "description": "generates a string representation of an object by combining the user name and price.",
+            "params": [],
+            "returns": {
+              "type_name": "string",
+              "description": "a string consisting of the user name followed by a colon and then the price.\n\n* `userName`: A string value representing the user's name.\n* `price`: An integer value representing the price of the item.",
+              "complex_type": true
+            },
+            "usage": {
+              "language": "java",
+              "code": "public class Order {\n    private String userName;\n    private double price;\n\n    public Order(String userName, double price) {\n        this.userName = userName;\n        this.price = price;\n    }\n\n    @Override\n    public String toString() {\n        return userName + \"::\" + price;\n    }\n}\n",
+              "description": "\nHere is how the method would be used:\n"
+            },
+            "name": "toString",
+            "code": "@Override\n\tpublic String toString(){\n\t\treturn userName + \"::\" + price;\n\t}",
+            "location": {
+              "start": 131,
+              "insert": 131,
+              "offset": "\t",
+              "indent": 1,
+              "comment": null
+            },
+            "item_type": "method",
+            "length": 4,
+            "docLength": null
+          }
+        ]
+      }
+    }
+  },
+  {
+    "name": "StringTest.java",
+    "path": "perf/StreamBenchmark/src/lee/StringTest.java",
+    "content": {
+      "structured": {
+        "description": "a `StringTest` class that performs various tests on string manipulation. The main method calls the `doTest()` method, which first warms up the random string list generator and then runs several tests:\n\n* Testing the `minStringForLoop()`, `minStringStream()`, and `minStringParallelStream()` methods, which compare the shortest string in a list to the previous shortest string.\n* Generating random strings of varying lengths using the `randomStringList()` method.\n\nThe code uses several high-level packages, including `java`, `java.util`, `java.util.Random`, and `java.util.stream`.",
+        "items": [
+          {
+            "id": "ac541774-a57b-b181-b049-6cd28ccec622",
+            "ancestors": [],
+            "type": "function",
+            "description": "is a Java file that tests various methods for finding the minimum string in an array of strings. It includes several different approaches to find the minimum string, including using loops, streams, and parallel streams. The class also includes a warm-up method to ensure consistent results.",
+            "name": "StringTest",
+            "code": "public class StringTest {\n\n\tpublic static void main(String[] args) {\n\t\tnew StringTest().doTest();\n\t}\n\tpublic void doTest(){\n\t\twarmUp();\n\t\tint[] lengths = {\n\t\t\t\t10000, \n\t\t\t\t100000, \n\t\t\t\t1000000, \n\t\t\t\t10000000, \n\t\t\t\t20000000, \n\t\t\t\t40000000\n\t\t\t};\n\t\tfor(int length : lengths){\n\t\t\tSystem.out.println(String.format(\"---List length: %d---\", length));\n\t\t\tArrayList<String> list = randomStringList(length);\n\t\t\tint times = 4;\n\t\t\tString min1 = \"1\";\n\t\t\tString min2 = \"2\";\n\t\t\tString min3 = \"3\";\n\t\t\tlong startTime;\n\t\t\t\n\t\t\tstartTime = System.nanoTime();\n\t\t\tfor(int i=0; i<times; i++){\n\t\t\t\tmin1 = minStringForLoop(list);\n\t\t\t}\n\t\t\tTimeUtil.outTimeUs(startTime, \"minStringForLoop time:\", times);\n\t\t\t\n\t\t\tstartTime = System.nanoTime();\n\t\t\tfor(int i=0; i<times; i++){\n\t\t\t\tmin2 = minStringStream(list);\n\t\t\t}\n\t\t\tTimeUtil.outTimeUs(startTime, \"minStringStream time:\", times);\n\n\t\t\tstartTime = System.nanoTime();\n\t\t\tfor(int i=0; i<times; i++){\n\t\t\t\tmin3 = minStringParallelStream(list);\t\n\t\t\t}\n\t\t\tTimeUtil.outTimeUs(startTime, \"minStringParallelStream time:\", times);\n\t\t\t\n\t\t\tSystem.out.println(min1.equals(min2) && min2.equals(min3));\n//\t\t\tSystem.out.println(min1);\n\t\t}\n\t}\n\tprivate void warmUp(){\n\t\tArrayList<String> list = randomStringList(10);\n\t\tfor(int i=0; i<20000; i++){\n\t\t\tminStringForLoop(list);\n\t\t\tminStringStream(list);\n\t\t\tminStringParallelStream(list);\n\t\t\t\n\t\t}\n\t}\n\tprivate String minStringForLoop(ArrayList<String> list){\n\t\tString minStr = null;\n\t\tboolean first = true;\n\t\tfor(String str : list){\n\t\t\tif(first){\n\t\t\t\tfirst = false;\n\t\t\t\tminStr = str;\n\t\t\t}\n\t\t\tif(minStr.compareTo(str)>0){\n\t\t\t\tminStr = str;\n\t\t\t}\n\t\t}\n\t\treturn minStr;\n\t}\n\tprivate String minStringStream(ArrayList<String> list){\n\t\treturn list.stream().min(String::compareTo).get();\n\t}\n\tprivate String minStringParallelStream(ArrayList<String> list){\n\t\treturn list.stream().parallel().min(String::compareTo).get();\n\t}\n\tprivate ArrayList<String> randomStringList(int listLength){\n\t\tArrayList<String> list = new ArrayList<>(listLength);\n\t\tRandom rand = new Random();\n\t\tint strLength = 10;\n\t\tStringBuilder buf = new StringBuilder(strLength);\n\t\tfor(int i=0; i<listLength; i++){\n\t\t\tbuf.delete(0, buf.length());\n\t\t\tfor(int j=0; j<strLength; j++){\n\t\t\t\tbuf.append((char)('a'+rand.nextInt(26)));\n\t\t\t}\n\t\t\tlist.add(buf.toString());\n\t\t}\n\t\treturn list;\n\t}\n}",
+            "location": {
+              "start": 12,
+              "insert": 6,
+              "offset": " ",
+              "indent": 0,
+              "comment": {
+                "start": 5,
+                "end": 11
+              }
+            },
+            "item_type": "class",
+            "length": 90,
+            "docLength": 6
+          },
+          {
+            "id": "68e1aac9-0aad-aba2-7c4d-01694c7a66af",
+            "ancestors": [
+              "ac541774-a57b-b181-b049-6cd28ccec622"
+            ],
+            "type": "function",
+            "description": "calls the `doTest()` method, which is not provided in the code snippet. Therefore, the functionality of the `main` function cannot be determined.",
+            "params": [
+              {
+                "name": "args",
+                "type_name": "String[]",
+                "description": "0 or more command-line arguments passed to the `main` method when the program is launched.\n\n* Length: The `main` function receives an array of strings called `args`, which has a length of 1.\n* Elements: The `args` array contains only one element, which is a string.",
+                "complex_type": true
+              }
+            ],
+            "name": "main",
+            "code": "public static void main(String[] args) {\n\t\tnew StringTest().doTest();\n\t}",
+            "location": {
+              "start": 14,
+              "insert": 14,
+              "offset": "\t",
+              "indent": 1,
+              "comment": null
+            },
+            "item_type": "method",
+            "length": 3,
+            "docLength": null
+          },
+          {
+            "id": "40bc0be5-9c11-e39e-a649-c7b7ed13c1dc",
+            "ancestors": [
+              "ac541774-a57b-b181-b049-6cd28ccec622"
+            ],
+            "type": "function",
+            "description": "performs benchmarking tests on various methods for finding the minimum string in a list, including a loop-based approach, a stream-based approach, and a parallel stream-based approach.",
+            "params": [],
+            "usage": {
+              "language": "java",
+              "code": "StringTest stringTest = new StringTest();\nstringTest.doTest();\n",
+              "description": ""
+            },
+            "name": "doTest",
+            "code": "public void doTest(){\n\t\twarmUp();\n\t\tint[] lengths = {\n\t\t\t\t10000, \n\t\t\t\t100000, \n\t\t\t\t1000000, \n\t\t\t\t10000000, \n\t\t\t\t20000000, \n\t\t\t\t40000000\n\t\t\t};\n\t\tfor(int length : lengths){\n\t\t\tSystem.out.println(String.format(\"---List length: %d---\", length));\n\t\t\tArrayList<String> list = randomStringList(length);\n\t\t\tint times = 4;\n\t\t\tString min1 = \"1\";\n\t\t\tString min2 = \"2\";\n\t\t\tString min3 = \"3\";\n\t\t\tlong startTime;\n\t\t\t\n\t\t\tstartTime = System.nanoTime();\n\t\t\tfor(int i=0; i<times; i++){\n\t\t\t\tmin1 = minStringForLoop(list);\n\t\t\t}\n\t\t\tTimeUtil.outTimeUs(startTime, \"minStringForLoop time:\", times);\n\t\t\t\n\t\t\tstartTime = System.nanoTime();\n\t\t\tfor(int i=0; i<times; i++){\n\t\t\t\tmin2 = minStringStream(list);\n\t\t\t}\n\t\t\tTimeUtil.outTimeUs(startTime, \"minStringStream time:\", times);\n\n\t\t\tstartTime = System.nanoTime();\n\t\t\tfor(int i=0; i<times; i++){\n\t\t\t\tmin3 = minStringParallelStream(list);\t\n\t\t\t}\n\t\t\tTimeUtil.outTimeUs(startTime, \"minStringParallelStream time:\", times);\n\t\t\t\n\t\t\tSystem.out.println(min1.equals(min2) && min2.equals(min3));\n//\t\t\tSystem.out.println(min1);\n\t\t}\n\t}",
+            "location": {
+              "start": 17,
+              "insert": 17,
+              "offset": "\t",
+              "indent": 1,
+              "comment": null
+            },
+            "item_type": "method",
+            "length": 41,
+            "docLength": null
+          },
+          {
+            "id": "42017347-fafa-ddb9-3746-336f31efafac",
+            "ancestors": [
+              "ac541774-a57b-b181-b049-6cd28ccec622"
+            ],
+            "type": "function",
+            "description": "iteratively calls three methods on an ArrayList of strings: `minStringForLoop`, `minStringStream`, and `minStringParallelStream`. Each method performs a different optimization on the list.",
+            "params": [],
+            "usage": {
+              "language": "java",
+              "code": "import java.util.ArrayList;\nimport java.util.Random;\n\npublic class StringTest {\n    public static void main(String[] args) {\n        new StringTest().doTest();\n    }\n    \n    public void doTest() {\n        ArrayList<String> list = randomStringList(10);\n        for (int i=0; i<20000; i++) {\n            minStringForLoop(list);\n            minStringStream(list);\n            minStringParallelStream(list);\n        }\n    }\n    \n    private void warmUp() {\n        ArrayList<String> list = randomStringList(10);\n        for (int i=0; i<20000; i++) {\n            minStringForLoop(list);\n            minStringStream(list);\n            minStringParallelStream(list);\n        }\n    }\n    \n    private String minStringForLoop(ArrayList<String> list) {\n        String minStr = null;\n        boolean first = true;\n        for (String str : list) {\n            if (first) {\n                first = false;\n                minStr = str;\n            }\n            if (minStr.compareTo(str) > 0) {\n                minStr = str;\n            }\n        }\n        return minStr;\n    }\n    \n    private String minStringStream(ArrayList<String> list) {\n        return list.stream().min(String::compareTo).get();\n    }\n    \n    private String minStringParallelStream(ArrayList<String> list) {\n        return list.stream().parallel().min(String::compareTo).get();\n    }\n    \n    private ArrayList<String> randomStringList(int listLength) {\n        ArrayList<String> list = new ArrayList<>(listLength);\n        Random rand = new Random();\n        int strLength = 10;\n        StringBuilder buf = new StringBuilder(strLength);\n        for (int i=0; i<listLength; i++) {\n            buf.delete(0, buf.length());\n            for (int j=0; j<strLength; j++) {\n                buf.append((char)('a'+rand.nextInt(26)));\n            }\n            list.add(buf.toString());\n        }\n        return list;\n    }\n}\n",
+              "description": ""
+            },
+            "name": "warmUp",
+            "code": "private void warmUp(){\n\t\tArrayList<String> list = randomStringList(10);\n\t\tfor(int i=0; i<20000; i++){\n\t\t\tminStringForLoop(list);\n\t\t\tminStringStream(list);\n\t\t\tminStringParallelStream(list);\n\t\t\t\n\t\t}\n\t}",
+            "location": {
+              "start": 58,
+              "insert": 58,
+              "offset": "\t",
+              "indent": 1,
+              "comment": null
+            },
+            "item_type": "method",
+            "length": 9,
+            "docLength": null
+          },
+          {
+            "id": "bef202b2-9187-079f-f54f-73a07f95c1c7",
+            "ancestors": [
+              "ac541774-a57b-b181-b049-6cd28ccec622"
+            ],
+            "type": "function",
+            "description": "iterates through an ArrayList of Strings and returns the minimum string in the list.",
+            "params": [
+              {
+                "name": "list",
+                "type_name": "ArrayList<String>",
+                "description": "list of strings to be compared and returned as the minimum string value in the function execution.\n\n* It is an ArrayList of Strings, meaning it is a collection of String objects.\n* Each element in the list is a String object.\n* The size of the list can vary depending on the input provided.",
+                "complex_type": true
+              }
+            ],
+            "returns": {
+              "type_name": "String",
+              "description": "the smallest string from the input list.",
+              "complex_type": false
+            },
+            "usage": {
+              "language": "java",
+              "code": "import java.util.ArrayList;\n\npublic class Main {\n    public static void main(String[] args) {\n        ArrayList<String> list = new ArrayList<>();\n        \n        // Add elements to the list\n        list.add(\"banana\");\n        list.add(\"orange\");\n        list.add(\"apple\");\n        \n        String smallest = minStringForLoop(list);\n        System.out.println(\"Smallest string in the list is: \" + smallest);\n    }\n}\n",
+              "description": ""
+            },
+            "name": "minStringForLoop",
+            "code": "private String minStringForLoop(ArrayList<String> list){\n\t\tString minStr = null;\n\t\tboolean first = true;\n\t\tfor(String str : list){\n\t\t\tif(first){\n\t\t\t\tfirst = false;\n\t\t\t\tminStr = str;\n\t\t\t}\n\t\t\tif(minStr.compareTo(str)>0){\n\t\t\t\tminStr = str;\n\t\t\t}\n\t\t}\n\t\treturn minStr;\n\t}",
+            "location": {
+              "start": 67,
+              "insert": 67,
+              "offset": "\t",
+              "indent": 1,
+              "comment": null
+            },
+            "item_type": "method",
+            "length": 14,
+            "docLength": null
+          },
+          {
+            "id": "4fdf2e6d-377f-9a93-044f-54a77dcc90d9",
+            "ancestors": [
+              "ac541774-a57b-b181-b049-6cd28ccec622"
+            ],
+            "type": "function",
+            "description": "takes an ArrayList of Strings and returns the minimum String in the list after streaming the elements and comparing them using the `compareTo()` method.",
+            "params": [
+              {
+                "name": "list",
+                "type_name": "ArrayList<String>",
+                "description": "ArrayList of strings to be compared and reduced to the smallest string using the Stream API.\n\nThe `list` input is an instance of `ArrayList`. This means that it is a collection class in Java that can store a list of objects or primitives and provides methods for common operations such as adding, removing, and accessing elements.",
+                "complex_type": true
+              }
+            ],
+            "returns": {
+              "type_name": "String",
+              "description": "the minimum string in the input list.",
+              "complex_type": false
+            },
+            "usage": {
+              "language": "java",
+              "code": "ArrayList<String> list = new ArrayList<>();\nlist.add(\"hello\");\nlist.add(\"there\");\nSystem.out.println(minStringStream(list));  // prints \"hello\"\n",
+              "description": ""
+            },
+            "name": "minStringStream",
+            "code": "private String minStringStream(ArrayList<String> list){\n\t\treturn list.stream().min(String::compareTo).get();\n\t}",
+            "location": {
+              "start": 81,
+              "insert": 81,
+              "offset": "\t",
+              "indent": 1,
+              "comment": null
+            },
+            "item_type": "method",
+            "length": 3,
+            "docLength": null
+          },
+          {
+            "id": "dfbcba5a-d9e0-8b8d-244d-6460c230d1d1",
+            "ancestors": [
+              "ac541774-a57b-b181-b049-6cd28ccec622"
+            ],
+            "type": "function",
+            "description": "takes an ArrayList of Strings and returns the minimum String in the list after parallel streaming and using the `min()` method.",
+            "params": [
+              {
+                "name": "list",
+                "type_name": "ArrayList<String>",
+                "description": "list of strings to be processed using parallel stream and the minimum string is returned.\n\n* `list` is an ArrayList of Strings.\n* The stream method is called on the list parallel to each other, indicating that multiple threads are executed simultaneously.\n* The `min` method is used to find the smallest element in the stream, which is a String in this case.\n* The `compareTo` method compares the two elements being compared based on their string representation.",
+                "complex_type": true
+              }
+            ],
+            "returns": {
+              "type_name": "String",
+              "description": "the minimum string value in the input list.",
+              "complex_type": false
+            },
+            "usage": {
+              "language": "java",
+              "code": "import java.util.ArrayList;\n\npublic class Main {\n    public static void main(String[] args) {\n        ArrayList<String> list = new ArrayList<>();\n        // Add strings to the list\n        String result = minStringParallelStream(list);\n        System.out.println(result);\n    }\n}\n",
+              "description": ""
+            },
+            "name": "minStringParallelStream",
+            "code": "private String minStringParallelStream(ArrayList<String> list){\n\t\treturn list.stream().parallel().min(String::compareTo).get();\n\t}",
+            "location": {
+              "start": 84,
+              "insert": 84,
+              "offset": "\t",
+              "indent": 1,
+              "comment": null
+            },
+            "item_type": "method",
+            "length": 3,
+            "docLength": null
+          },
+          {
+            "id": "d18d6ea2-1a28-259f-e04b-cf3ef4ff3be6",
+            "ancestors": [
+              "ac541774-a57b-b181-b049-6cd28ccec622"
+            ],
+            "type": "function",
+            "description": "generates an array of random strings of a specified length using a randomized approach to prevent repetition.",
+            "params": [
+              {
+                "name": "listLength",
+                "type_name": "int",
+                "description": "maximum length of the randomly generated string list, which determines the capacity of the `ArrayList` and the number of strings generated.",
+                "complex_type": false
+              }
+            ],
+            "returns": {
+              "type_name": "ArrayList",
+              "description": "a list of randomized strings of length 10 each.\n\n* The function returns an ArrayList of strings, where each string has a length of 10 characters.\n* The ArrayList is created using the `new` keyword and the `ArrayList` class.\n* A Random object is created using the `new` keyword and the `Random` class. This object is used to generate random integers for each string in the list.\n* For each iteration of the loop, a new StringBuffer is created using the `new` keyword and the `StringBuilder` class. The length of the StringBuffer is set to 10 characters using the `delete` method.\n* In the inner loop, a random character is generated using the `nextInt` method of the Random object, and this character is appended to the StringBuffer using the `append` method.\n* Once all the strings are generated, they are added to the ArrayList using the `add` method.\n* The function returns the ArrayList of strings.",
+              "complex_type": true
+            },
+            "usage": {
+              "language": "java",
+              "code": "public class Main {\n  public static void main(String[] args) {\n    ArrayList<String> list = new ArrayList<>();\n    int listLength = 10; // the number of elements to be added to the list.\n    list = randomStringList(listLength); // adding 10 random strings to the list\n    System.out.println(list); // printing the contents of the list\n  }\n}\n",
+              "description": ""
+            },
+            "name": "randomStringList",
+            "code": "private ArrayList<String> randomStringList(int listLength){\n\t\tArrayList<String> list = new ArrayList<>(listLength);\n\t\tRandom rand = new Random();\n\t\tint strLength = 10;\n\t\tStringBuilder buf = new StringBuilder(strLength);\n\t\tfor(int i=0; i<listLength; i++){\n\t\t\tbuf.delete(0, buf.length());\n\t\t\tfor(int j=0; j<strLength; j++){\n\t\t\t\tbuf.append((char)('a'+rand.nextInt(26)));\n\t\t\t}\n\t\t\tlist.add(buf.toString());\n\t\t}\n\t\treturn list;\n\t}",
+            "location": {
+              "start": 87,
+              "insert": 87,
+              "offset": "\t",
+              "indent": 1,
+              "comment": null
+            },
+            "item_type": "method",
+            "length": 14,
+            "docLength": null
+          }
+        ]
+      }
+    }
+  },
+  {
+    "name": "TimeUtil.java",
+    "path": "perf/StreamBenchmark/src/lee/TimeUtil.java",
+    "content": {
+      "structured": {
+        "description": "Three methods: outTimeMs, outTimeUs, and outTimeUs(long startTime, String msg, int times). The outTimeMs method prints a message and the difference between the current time in milliseconds and a specified starting time. The outTimeUs method calculates the average time difference between the current time in microseconds and a specified starting time for multiple calls, printing the result as an average value. Finally, the outTimeUs(long startTime, String msg, int times) method calculates and prints the average time difference in microseconds across multiple calls, including the total time spent and the number of calls made.",
+        "items": [
+          {
+            "id": "cd405ad4-63bf-02ac-474c-97ff8eeea4e6",
+            "ancestors": [],
+            "type": "function",
+            "description": "is a utility class that provides three methods for printing the time elapsed in milliseconds (ms), microseconds (us), and average us based on nanoseconds (ns). The methods take a start time as input and print the time difference with respect to the current system time.",
+            "name": "TimeUtil",
+            "code": "public class TimeUtil {\n\tpublic static void outTimeMs(long startTime, String msg){\n\t\tlong ms = System.currentTimeMillis()-startTime;\n\t\tSystem.out.println(msg + \" \" + ms + \" ms\");\n\t\t\n\t}\n\tpublic static void outTimeUs(long startTime, String msg){\n\t\tlong us = (System.nanoTime()-startTime+500)/1000;\n\t\tSystem.out.println(msg + \" \" + us + \" us\");\n\t}\n\tpublic static void outTimeUs(long startTime, String msg, int times){\n\t\tlong ns_all = System.nanoTime()-startTime;\n\t\tdouble us_avg = (ns_all+500.0)/1000/times;\n\t\tSystem.out.println(\n\t\t\t\tString.format(\"%s avg of %d = %.2f us\", msg, times, us_avg));\n\t}\n}",
+            "location": {
+              "start": 3,
+              "insert": 3,
+              "offset": " ",
+              "indent": 0,
+              "comment": null
+            },
+            "item_type": "class",
+            "length": 17,
+            "docLength": null
+          },
+          {
+            "id": "c3c8a38d-f436-78a8-6445-378b412909df",
+            "ancestors": [
+              "cd405ad4-63bf-02ac-474c-97ff8eeea4e6"
+            ],
+            "type": "function",
+            "description": "takes a start time and message as input, calculates the time difference in milliseconds since the start time, and prints the result to the console along with the message.",
+            "params": [
+              {
+                "name": "startTime",
+                "type_name": "long",
+                "description": "time at which the measurement of the elapsed time should begin, which is then used to calculate the elapsed time in milliseconds.",
+                "complex_type": false
+              },
+              {
+                "name": "msg",
+                "type_name": "String",
+                "description": "message that will be printed along with the elapsed time in milliseconds.",
+                "complex_type": false
+              }
+            ],
+            "name": "outTimeMs",
+            "code": "public static void outTimeMs(long startTime, String msg){\n\t\tlong ms = System.currentTimeMillis()-startTime;\n\t\tSystem.out.println(msg + \" \" + ms + \" ms\");\n\t\t\n\t}",
+            "location": {
+              "start": 4,
+              "insert": 4,
+              "offset": "\t",
+              "indent": 1,
+              "comment": null
+            },
+            "item_type": "method",
+            "length": 5,
+            "docLength": null
+          },
+          {
+            "id": "e81d30a6-ddce-ce9c-a64f-93c68dfec43c",
+            "ancestors": [
+              "cd405ad4-63bf-02ac-474c-97ff8eeea4e6"
+            ],
+            "type": "function",
+            "description": "calculates and prints the time taken in microseconds (μs) for a given task, based on the difference between the current time and the start time, adjusted by 500 μs.",
+            "params": [
+              {
+                "name": "startTime",
+                "type_name": "long",
+                "description": "start time of the measurement in milliseconds, which is subtracted from the current system time to calculate the elapsed time in milliseconds.",
+                "complex_type": false
+              },
+              {
+                "name": "msg",
+                "type_name": "String",
+                "description": "message to be printed along with the elapsed time in milliseconds.",
+                "complex_type": false
+              }
+            ],
+            "name": "outTimeUs",
+            "code": "public static void outTimeUs(long startTime, String msg){\n\t\tlong us = (System.nanoTime()-startTime+500)/1000;\n\t\tSystem.out.println(msg + \" \" + us + \" us\");\n\t}",
+            "location": {
+              "start": 9,
+              "insert": 9,
+              "offset": "\t",
+              "indent": 1,
+              "comment": null
+            },
+            "item_type": "method",
+            "length": 4,
+            "docLength": null
+          },
+          {
+            "id": "6df93ebd-0c48-fcb3-be4e-45fbc35ffbae",
+            "ancestors": [
+              "cd405ad4-63bf-02ac-474c-97ff8eeea4e6"
+            ],
+            "type": "function",
+            "description": "calculates and prints the average time taken for a given number of iterations, using nanosecond resolution to provide high accuracy.",
+            "params": [
+              {
+                "name": "startTime",
+                "type_name": "long",
+                "description": "time at which the measurement of execution time began.",
+                "complex_type": false
+              },
+              {
+                "name": "msg",
+                "type_name": "String",
+                "description": "message to be printed along with the average execution time calculation.",
+                "complex_type": false
+              },
+              {
+                "name": "times",
+                "type_name": "int",
+                "description": "number of measurements to average when calculating the average execution time for the given task.",
+                "complex_type": false
+              }
+            ],
+            "name": "outTimeUs",
+            "code": "public static void outTimeUs(long startTime, String msg, int times){\n\t\tlong ns_all = System.nanoTime()-startTime;\n\t\tdouble us_avg = (ns_all+500.0)/1000/times;\n\t\tSystem.out.println(\n\t\t\t\tString.format(\"%s avg of %d = %.2f us\", msg, times, us_avg));\n\t}",
+            "location": {
+              "start": 13,
+              "insert": 13,
+              "offset": "\t",
+              "indent": 1,
+              "comment": null
+            },
+            "item_type": "method",
+            "length": 6,
+            "docLength": null
+          }
+        ]
+      }
+    }
+  }
+]
